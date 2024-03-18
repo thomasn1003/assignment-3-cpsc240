@@ -8,30 +8,30 @@
 rm *.o
 rm *.out
 
-# Assembles manager.asm
+echo "Assemble the source file manager.asm"
 nasm -f elf64 -l manager.lis -o manager.o manager.asm
 
-# Assembles input_array.asm
-nasm -f elf64 -l input_array.lis -o input_array.o input_array.asm
-
-# Assembles compute_mean.asm
-nasm -f elf64  -l compute_mean.lis -o compute_mean.o compute_mean.asm
-
-# Assembles isfloat.asm
+echo "Assemble the source file isfloat.asm"
 nasm -f elf64 -l isfloat.lis -o isfloat.o isfloat.asm
 
-# Compiles main.c
-gcc  -m64  -Wall -no-pie -o main.o -std=c2x -c main.c
+echo "Assemble the source file input_array.asm"
+nasm -f elf64 -l input_array.lis -o input_array.o input_array.asm
 
-# Compiles output_array.c
-gcc  -m64  -Wall -no-pie -o output_array.o -std=c2x -c output_array.c
+echo "Assemble the source file compute_mean.asm"
+nasm -f elf64 -l compute_mean.lis -o compute_mean.o compute_mean.asm
 
-# Compiles compute_variance.cpp
-gcc  -m64  -Wall -no-pie -o compute_variance.o -std=c2x -c compute_variance.cpp
+echo "Compile the source file main.c"
+gcc  -m64 -Wall -no-pie -o main.o -std=c2x -c main.c
 
-# Linker for the object files
-gcc -m64 -no-pie -o a.out manager.o input_array.o compute_mean.o isfloat.o main.o output_array.o compute_variance.o -lm -std=c2x -Wall -z noexecstack
+echo "Compile the source file output_array.c"
+gcc  -m64 -Wall -no-pie -o output_array.o -std=c2x -c output_array.c
 
-# Runs the program
+echo "Compile the source file compute_variance.c++"
+g++  -c -m64 -Wall -fno-pie -no-pie -o compute_variance.o compute_variance.cpp
+
+echo "Link the object modules to create an executable file"
+g++ -m64 -no-pie -o a.out isfloat.o manager.o input_array.o compute_mean.o output_array.o compute_variance.o main.o -std=c2x -Wall -z noexecstack -lm
+
+echo "Execute the program"
 chmod +x a.out
 ./a.out
